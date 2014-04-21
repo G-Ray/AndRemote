@@ -66,20 +66,35 @@ class Receive_cmd implements Runnable {
                 inputStreamReader = new InputStreamReader(socket.getInputStream());
                 bufferedReader = new BufferedReader(inputStreamReader);
                 cmd = bufferedReader.readLine();
-                execute_cmd(cmd);
+
+                if(cmd.equals("CloseConnection")) {
+                    bufferedReader.close();
+                    socket.close();
+                }
+                else
+                    execute_cmd(cmd);
             }
         } catch (IOException e) {
+            if (socket.isClosed()) {
+                System.out.println("Connection closed");
+                System.out.println("Waiting for connection");
+                return;
+            }
             e.printStackTrace();
         }
     }
 
     private void execute_cmd(String cmd) {
-        System.out.println("Message received:" + cmd);
+        System.out.println("Command received:" + cmd);
+        String delims = "[,]";
+        // Splits the command's args
+        String[] args = cmd.split(delims);
         MoveMouse m = new MoveMouse();
 
-        //TODO: Implement all commands
-        if (cmd.equals("mouse_right")) {
-            m.right();
+        if (args[0].equals("MouseMove")) {
+            int x = Integer.parseInt(args[1]);
+            int y = Integer.parseInt(args[2]);
+            m.move(x, y);
         }
     }
 }
@@ -88,10 +103,10 @@ class MoveMouse {
     public MoveMouse() {
     }
 
-    public void right() {
+    public void move(int x, int y) {
         try {
             Robot robot = new Robot();
-            robot.mouseMove(300, 400);
+            robot.mouseMove(x, y);
         } catch (AWTException e) {
             e.printStackTrace();
         }
