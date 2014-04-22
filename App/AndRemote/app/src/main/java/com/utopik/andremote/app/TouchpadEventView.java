@@ -9,6 +9,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  * Created by geoffrey on 4/9/14.
  */
@@ -50,3 +55,4 @@ public class TouchpadEventView extends View {
         return true;
     }
 }
+

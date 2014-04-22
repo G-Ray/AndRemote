@@ -4,10 +4,11 @@
     <string name="app_name">AndRemote</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_reconnect">Reconnect</string>
     <string name="pref_host">Host</string>
     <string name="pref_host_summary">Host to connect to</string>
     <string name="pref_connection">Connection parameters</string>
     <string name="pref_port">Port</string>
-    <string name="pref_port_summary">Port to listen to</string>
+    <string name="pref_port_summary">Port to connect to</string>
 
 </resources>
