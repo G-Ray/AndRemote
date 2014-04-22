@@ -48,7 +48,7 @@ class SendCommand implements Runnable {
                 PrintWriter out = new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())), true);
                 Scanner sc = new Scanner(System.in);
-                System.out.println("Votre message :");
+                System.out.println("Your command:");
                 String message = sc.nextLine();
                 if (message.equals("CloseConnection")) {
                     out.println(message);
