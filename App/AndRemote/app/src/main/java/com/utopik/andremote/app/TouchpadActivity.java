@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,6 +20,11 @@ public class TouchpadActivity extends Activity {
     private Thread thread;
     private String host;
     private int port;
+    private static Socket socket;
+
+    public static Socket getSocket() {
+        return socket;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,6 @@ public class TouchpadActivity extends Activity {
     }
 
     public class ConnectionThread implements Runnable {
-        private Socket socket;
         private String HOST;
         private int PORT;
 

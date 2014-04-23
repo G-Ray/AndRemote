@@ -66,6 +66,7 @@ class Receive_cmd implements Runnable {
                 inputStreamReader = new InputStreamReader(socket.getInputStream());
                 bufferedReader = new BufferedReader(inputStreamReader);
                 cmd = bufferedReader.readLine();
+                System.out.println("Command received:" + cmd);
 
                 if(cmd.equals("CloseConnection")) {
                     bufferedReader.close();
@@ -85,7 +86,6 @@ class Receive_cmd implements Runnable {
     }
 
     private void execute_cmd(String cmd) {
-        System.out.println("Command received:" + cmd);
         String delims = "[,]";
         // Splits the command's args
         String[] args = cmd.split(delims);

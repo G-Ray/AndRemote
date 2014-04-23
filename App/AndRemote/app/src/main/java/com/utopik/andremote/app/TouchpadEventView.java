@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 
 /**
@@ -40,6 +42,22 @@ public class TouchpadEventView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         float eventX = event.getX();
         float eventY = event.getY();
+
+        /* Build the command */
+        String cmd = "MouseMove," + Math.round(eventX) + "," + Math.round(eventY);
+
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
