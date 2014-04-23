@@ -66,6 +66,9 @@ public class TouchpadEventView extends View {
             case MotionEvent.ACTION_MOVE:
                 path.lineTo(eventX, eventY);
                 break;
+            case MotionEvent.ACTION_UP:
+                path.reset();
+                break;
             default:
                 return false;
         }
