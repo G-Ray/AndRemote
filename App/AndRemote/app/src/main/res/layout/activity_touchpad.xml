@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonkeyboard"
         android:background="#35a9db"
-        android:id="@+id/view" />
+        android:id="@+id/activeSurface" />
 
     <Button
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editTextKeyboard"
-        android:layout_alignBottom="@+id/view"
+        android:layout_alignBottom="@+id/activeSurface"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"

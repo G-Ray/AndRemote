@@ -1,6 +1,7 @@
 package com.utopik;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -96,6 +97,10 @@ class Receive_cmd implements Runnable {
             int y = Integer.parseInt(args[2]);
             m.move(x, y);
         }
+
+        if (args[0].equals("MouseClickLeft")) {
+            m.clickLeft();
+        }
     }
 }
 
@@ -112,6 +117,16 @@ class MoveMouse {
         try {
             Robot robot = new Robot();
             robot.mouseMove(posX + x, posY + y);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickLeft() {
+        try {
+            Robot robot = new Robot();
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
         } catch (AWTException e) {
             e.printStackTrace();
         }

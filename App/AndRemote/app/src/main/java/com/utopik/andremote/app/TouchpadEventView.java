@@ -1,6 +1,8 @@
 package com.utopik.andremote.app;
 
 import android.content.Context;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,12 +21,14 @@ import java.net.UnknownHostException;
 /**
  * Created by geoffrey on 4/9/14.
  */
-public class TouchpadEventView extends View {
+public class TouchpadEventView extends View implements OnGestureListener {
     private Paint paint = new Paint();
     private Path path = new Path();
-    float previousX = 0;
-    float previousY = 0;
-    private PrintWriter out;
+    private float previousX = 0;
+    private float previousY = 0;
+    private boolean mouseMoved = false;
+    private String cmd;
+    private GestureDetector gestureScanner;
 
     public TouchpadEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +38,72 @@ public class TouchpadEventView extends View {
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
+        gestureScanner = new GestureDetector(this);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) {
+        path.moveTo(event.getX(), event.getY());
+        previousX = event.getX();
+        previousY = event.getY();
+        return true;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        /* Build the command */
+        cmd = "MouseMove," + Math.round(e2.getX() - previousX) + "," + Math.round(e2.getY() - previousY);
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+            previousX = e2.getX();
+            previousY = e2.getY();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        path.lineTo(e1.getX(), e1.getY());
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+        /* Build the command */
+        Log.i("test", "TAP");
+        cmd = "MouseClickLeft,0,0";
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
@@ -43,41 +113,8 @@ public class TouchpadEventView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                path.moveTo(event.getX(), event.getY());
-                previousX = event.getX();
-                previousY = event.getY();
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                /* Build the command */
-                String cmd = "MouseMove," + Math.round(event.getX() - previousX) + "," + Math.round(event.getY() - previousY);
-                //Todo: Clean that
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-                    out.println(cmd);
-                    Log.i("Command", cmd);
-                    previousX = event.getX();
-                    previousY = event.getY();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                path.lineTo(event.getX(), event.getY());
-                break;
-            case MotionEvent.ACTION_UP:
-                path.reset();
-                break;
-            default:
-                return false;
-        }
-        invalidate();
-        return true;
+        return gestureScanner.onTouchEvent(event);
+        //return true;
     }
 }
 
