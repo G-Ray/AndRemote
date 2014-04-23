@@ -104,9 +104,14 @@ class MoveMouse {
     }
 
     public void move(int x, int y) {
+        /* Get actual mouse position */
+        Point mousePos = MouseInfo.getPointerInfo().getLocation();
+        int posX = (int) mousePos.getX();
+        int posY = (int) mousePos.getY();
+
         try {
             Robot robot = new Robot();
-            robot.mouseMove(x, y);
+            robot.mouseMove(posX + x, posY + y);
         } catch (AWTException e) {
             e.printStackTrace();
         }
