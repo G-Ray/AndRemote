@@ -1,6 +1,8 @@
 package com.utopik.andremote.app;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.graphics.Canvas;
@@ -28,6 +30,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
     private float previousY = 0;
     private String cmd;
     private GestureDetector gestureScanner;
+    private int sensitivity = 1;
 
     public TouchpadEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,6 +41,9 @@ public class TouchpadEventView extends View implements OnGestureListener {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
         gestureScanner = new GestureDetector(this);
+        // Todo: Use an int array
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
     }
 
     @Override
@@ -76,7 +82,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         /* Build the command */
-        cmd = "MouseMove," + Math.round(e2.getX() - previousX) + "," + Math.round(e2.getY() - previousY);
+        cmd = "MouseMove," + Math.round(e2.getX() - previousX)*sensitivity + "," + Math.round(e2.getY() - previousY)*sensitivity;
         //Todo: Clean that
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(

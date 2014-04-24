@@ -14,5 +14,11 @@
             android:title="@string/pref_port"
             android:summary="@string/pref_port_summary"
             android:defaultValue="8080"/>
+        <ListPreference
+            android:key= "prefSensitivity"
+            android:title="Sensitivity"
+            android:summary="Set mouse sensitivity"
+            android:entries="@array/sensitivityValues"
+            android:entryValues="@array/sensitivityValues" />
     </PreferenceCategory>
 </PreferenceScreen>
