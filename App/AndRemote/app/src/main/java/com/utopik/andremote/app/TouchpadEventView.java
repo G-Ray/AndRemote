@@ -26,7 +26,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
     private Path path = new Path();
     private float previousX = 0;
     private float previousY = 0;
-    private boolean mouseMoved = false;
     private String cmd;
     private GestureDetector gestureScanner;
 
@@ -55,7 +54,23 @@ public class TouchpadEventView extends View implements OnGestureListener {
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
+    public void onLongPress(MotionEvent event) {
+        /* Build the command
+        *  Perform a right click */
+        cmd = "MouseClickRight,0,0";
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -77,7 +92,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        path.lineTo(e1.getX(), e1.getY());
+        path.lineTo(e2.getX(), e2.getY());
         return true;
     }
 
@@ -87,8 +102,8 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
     @Override
     public boolean onSingleTapUp(MotionEvent event) {
-        /* Build the command */
-        Log.i("test", "TAP");
+        /* Build the command
+        *  Perform a left click */
         cmd = "MouseClickLeft,0,0";
         //Todo: Clean that
         try {
@@ -114,7 +129,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureScanner.onTouchEvent(event);
-        //return true;
     }
 }
 
