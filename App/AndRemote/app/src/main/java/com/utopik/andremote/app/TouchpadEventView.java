@@ -31,6 +31,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
     private String cmd;
     private GestureDetector gestureScanner;
     private int sensitivity = 1;
+    private boolean moveable = true;
 
     public TouchpadEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -81,24 +82,63 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        /* Build the command */
-        cmd = "MouseMove," + Math.round(e2.getX() - previousX)*sensitivity + "," + Math.round(e2.getY() - previousY)*sensitivity;
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-            previousX = e2.getX();
-            previousY = e2.getY();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        /* One finger */
+        if (e2.getPointerCount() == 1 && moveable == true) {
+                /* Build the command */
+                cmd = "MouseMove," + Math.round(e2.getX() - previousX) * sensitivity + "," + Math.round(e2.getY() - previousY) * sensitivity;
+            //Todo: Clean that
+            try {
+                PrintWriter out = new PrintWriter(new BufferedWriter(
+                        new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+                out.println(cmd);
+                Log.i("Command", cmd);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            path.lineTo(e2.getX(), e2.getY());
         }
-        path.lineTo(e2.getX(), e2.getY());
+        /* Two fingers, then scroll mouseWheel*/
+        else if (e2.getPointerCount() == 2) {
+            moveable = false;
+            if (e2.getY(0) - previousY < 0) {
+                cmd = "MouseWheelDown,0,0";
+                //Todo: Clean that
+                try {
+                    PrintWriter out = new PrintWriter(new BufferedWriter(
+                            new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+                    out.println(cmd);
+                    Log.i("Command", cmd);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (e2.getY(0) - previousY > 0) {
+                cmd = "MouseWheelUp,0,0";
+                //Todo: Clean that
+                try {
+                    PrintWriter out = new PrintWriter(new BufferedWriter(
+                            new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+                    out.println(cmd);
+                    Log.i("Command", cmd);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        previousX = e2.getX();
+        previousY = e2.getY();
         return true;
     }
 
@@ -134,6 +174,9 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP)
+            moveable = true;
+
         return gestureScanner.onTouchEvent(event);
     }
 }

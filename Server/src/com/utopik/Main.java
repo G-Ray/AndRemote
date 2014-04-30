@@ -105,6 +105,14 @@ class Receive_cmd implements Runnable {
         if (args[0].equals("MouseClickRight")) {
             m.clickRight();
         }
+
+        if (args[0].equals("MouseWheelDown")) {
+            m.wheelDown();
+        }
+
+        if (args[0].equals("MouseWheelUp")) {
+            m.wheelUp();
+        }
     }
 }
 
@@ -141,6 +149,24 @@ class MoveMouse {
             Robot robot = new Robot();
             robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
             robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void wheelDown() {
+        try {
+            Robot robot = new Robot();
+            robot.mouseWheel(1);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void wheelUp() {
+        try {
+            Robot robot = new Robot();
+            robot.mouseWheel(-1);
         } catch (AWTException e) {
             e.printStackTrace();
         }
