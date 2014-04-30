@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -96,6 +101,24 @@ public class TouchpadActivity extends Activity {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        }
+    }
+
+    public void altTab(View view) {
+        /*  Alt+Tab */
+        String cmd = "AltTab,0,0";
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -2,6 +2,7 @@ package com.utopik;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -113,6 +114,10 @@ class Receive_cmd implements Runnable {
         if (args[0].equals("MouseWheelUp")) {
             m.wheelUp();
         }
+
+        if (args[0].equals("AltTab")) {
+            m.altTab();
+        }
     }
 }
 
@@ -167,6 +172,18 @@ class MoveMouse {
         try {
             Robot robot = new Robot();
             robot.mouseWheel(-1);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void altTab() {
+        try {
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_ALT);
+            robot.keyPress(KeyEvent.VK_TAB);
+            robot.keyRelease(KeyEvent.VK_ALT);
+            robot.keyRelease(KeyEvent.VK_TAB);
         } catch (AWTException e) {
             e.printStackTrace();
         }

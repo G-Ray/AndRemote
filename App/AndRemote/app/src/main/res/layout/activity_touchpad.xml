@@ -48,4 +48,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:singleLine="false" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alt+Tab"
+        android:id="@+id/buttonAltTab"
+        android:layout_above="@id/buttonkeyboard"
+        android:layout_alignRight="@+id/activeSurface"
+        android:layout_alignEnd="@+id/activeSurface"
+        android:onClick="altTab"
+        android:singleLine="false" />
 </RelativeLayout>

@@ -43,6 +43,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
         paint.setStrokeJoin(Paint.Join.ROUND);
         gestureScanner = new GestureDetector(this);
         // Todo: Use an int array
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
     }
@@ -119,8 +120,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            else if (e2.getY(0) - previousY > 0) {
+            } else if (e2.getY(0) - previousY > 0) {
                 cmd = "MouseWheelUp,0,0";
                 //Todo: Clean that
                 try {
