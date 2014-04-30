@@ -103,6 +103,14 @@ class Receive_cmd implements Runnable {
             m.clickLeft();
         }
 
+        if (args[0].equals("MouseClickLong")) {
+            m.clickLong();
+        }
+
+        if (args[0].equals("MouseClickLongRelease")) {
+            m.clickLongRelease();
+        }
+
         if (args[0].equals("MouseClickRight")) {
             m.clickRight();
         }
@@ -143,6 +151,24 @@ class MoveMouse {
         try {
             Robot robot = new Robot();
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickLong() {
+        try {
+            Robot robot = new Robot();
+            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickLongRelease() {
+        try {
+            Robot robot = new Robot();
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
         } catch (AWTException e) {
             e.printStackTrace();

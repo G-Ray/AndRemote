@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -42,10 +43,11 @@ public class TouchpadEventView extends View implements OnGestureListener {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
         gestureScanner = new GestureDetector(this);
+
         // Todo: Use an int array
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
+        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        //sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
     }
 
     @Override
@@ -179,5 +181,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
         return gestureScanner.onTouchEvent(event);
     }
+
 }
 

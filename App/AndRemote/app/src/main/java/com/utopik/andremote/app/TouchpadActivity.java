@@ -8,7 +8,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedWriter;
@@ -41,6 +43,19 @@ public class TouchpadActivity extends Activity {
         port = Integer.parseInt(sharedPref.getString("prefPort", ""));
         thread = new Thread(new ConnectionThread(host, port));
         thread.start();
+
+        Button buttonClick = (Button) findViewById(R.id.buttonClick);
+        buttonClick.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event ) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    clickPressed();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    clickReleased();
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -107,6 +122,42 @@ public class TouchpadActivity extends Activity {
     public void altTab(View view) {
         /*  Alt+Tab */
         String cmd = "AltTab,0,0";
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickPressed() {
+        /*  Alt+Tab */
+        String cmd = "MouseClickLong,0,0";
+        //Todo: Clean that
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+            out.println(cmd);
+            Log.i("Command", cmd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clickReleased() {
+        /*  Alt+Tab */
+        String cmd = "MouseClickLongRelease,0,0";
         //Todo: Clean that
         try {
             PrintWriter out = new PrintWriter(new BufferedWriter(
