@@ -102,6 +102,9 @@ public class TouchpadActivity extends Activity {
                 InetAddress serverAddress = InetAddress.getByName(HOST);
                 socket = new Socket(serverAddress, PORT);
 
+                Command.out = new PrintWriter(new BufferedWriter(
+                        new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
+
                 /* Update connection state*/
                 runOnUiThread(new Runnable() {
                     @Override
@@ -122,54 +125,18 @@ public class TouchpadActivity extends Activity {
     public void altTab(View view) {
         /*  Alt+Tab */
         String cmd = "AltTab,0,0";
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Command.sendCmd(cmd);
     }
 
     public void clickPressed() {
         /*  Alt+Tab */
         String cmd = "MouseClickLong,0,0";
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Command.sendCmd(cmd);
     }
 
     public void clickReleased() {
         /*  Alt+Tab */
         String cmd = "MouseClickLongRelease,0,0";
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Command.sendCmd(cmd);
     }
 }

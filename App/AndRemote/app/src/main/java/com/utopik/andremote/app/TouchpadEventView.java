@@ -1,8 +1,6 @@
 package com.utopik.andremote.app;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.graphics.Canvas;
@@ -10,16 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.UnknownHostException;
 
 /**
  * Created by geoffrey on 4/9/14.
@@ -68,40 +58,16 @@ public class TouchpadEventView extends View implements OnGestureListener {
         /* Build the command
         *  Perform a right click */
         cmd = "MouseClickRight,0,0";
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Command.sendCmd(cmd);
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         /* One finger */
         if (e2.getPointerCount() == 1 && moveable == true) {
-                /* Build the command */
-                cmd = "MouseMove," + Math.round(e2.getX() - previousX) * sensitivity + "," + Math.round(e2.getY() - previousY) * sensitivity;
-            //Todo: Clean that
-            try {
-                PrintWriter out = new PrintWriter(new BufferedWriter(
-                        new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-                out.println(cmd);
-                Log.i("Command", cmd);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            /* Build the command */
+            cmd = "MouseMove," + Math.round(e2.getX() - previousX) * sensitivity + "," + Math.round(e2.getY() - previousY) * sensitivity;
+            Command.sendCmd(cmd);
             path.lineTo(e2.getX(), e2.getY());
         }
         /* Two fingers, then scroll mouseWheel*/
@@ -109,34 +75,10 @@ public class TouchpadEventView extends View implements OnGestureListener {
             moveable = false;
             if (e2.getY(0) - previousY < 0) {
                 cmd = "MouseWheelDown,0,0";
-                //Todo: Clean that
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-                    out.println(cmd);
-                    Log.i("Command", cmd);
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Command.sendCmd(cmd);
             } else if (e2.getY(0) - previousY > 0) {
                 cmd = "MouseWheelUp,0,0";
-                //Todo: Clean that
-                try {
-                    PrintWriter out = new PrintWriter(new BufferedWriter(
-                            new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-                    out.println(cmd);
-                    Log.i("Command", cmd);
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Command.sendCmd(cmd);
             }
         }
         previousX = e2.getX();
@@ -153,19 +95,7 @@ public class TouchpadEventView extends View implements OnGestureListener {
         /* Build the command
         *  Perform a left click */
         cmd = "MouseClickLeft,0,0";
-        //Todo: Clean that
-        try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(TouchpadActivity.getSocket().getOutputStream())), true);
-            out.println(cmd);
-            Log.i("Command", cmd);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Command.sendCmd(cmd);
         return true;
     }
 
