@@ -10,5 +10,6 @@
     <string name="pref_connection">Connection parameters</string>
     <string name="pref_port">Port</string>
     <string name="pref_port_summary">Port to connect to</string>
+    <string name="pref_sensitivity">Sensitivity preferences</string>
 
 </resources>
