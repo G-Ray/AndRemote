@@ -3,6 +3,7 @@ package com.utopik.andremote.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class TouchpadActivity extends Activity {
     private String host;
     private int port;
     private static Socket socket;
+    private String curMode = "touchpad"; // Used to know in which mode we are
 
     public static Socket getSocket() {
         return socket;
@@ -72,17 +74,33 @@ public class TouchpadActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
+
         if (id == R.id.action_reconnect) {
             thread.interrupt();
             thread = new Thread(new ConnectionThread(host, port));
             thread.start();
             return true;
         }
+
+        if (id == R.id.action_accel && curMode.equals("accel")) {
+            findViewById(R.id.activeSurface).setBackgroundColor(Color.parseColor("#33B5E5"));
+            curMode = "touchpad";
+            item.setTitle(R.string.action_accel);
+            return true;
+        }
+        else if (id == R.id.action_accel && curMode.equals("touchpad")) {
+            findViewById(R.id.activeSurface).setBackgroundColor(Color.parseColor("#AA66CC"));
+            curMode = "accel";
+            item.setTitle("Touchpad Mode");
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

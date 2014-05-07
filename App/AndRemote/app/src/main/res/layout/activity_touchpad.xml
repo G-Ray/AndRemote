@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonkeyboard"
-        android:background="#35a9db"
+        android:background="#33B5E5"
         android:id="@+id/activeSurface" />
 
     <Button

@@ -10,4 +10,8 @@
         android:title="@string/action_reconnect"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/action_accel"
+        android:title="@string/action_accel"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
 </menu>

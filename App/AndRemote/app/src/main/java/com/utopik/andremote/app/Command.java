@@ -12,7 +12,9 @@ public class Command {
     public static PrintWriter out = null;
 
     public static void sendCmd(String cmd) {
+        if (out != null) {
             out.println(cmd);
             Log.i("Command", cmd);
+        }
     }
 }
