@@ -91,7 +91,7 @@ class Receive_cmd implements Runnable {
         String delims = "[,]";
         // Splits the command's args
         String[] args = cmd.split(delims);
-        MoveMouse m = new MoveMouse();
+        Command m = new Command();
 
         if (args[0].equals("MouseMove")) {
             int x = Integer.parseInt(args[1]);
@@ -129,8 +129,16 @@ class Receive_cmd implements Runnable {
     }
 }
 
-class MoveMouse {
-    public MoveMouse() {
+class Command {
+
+    private Robot robot;
+
+    public Command() {
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     public void move(int x, int y) {
@@ -139,79 +147,39 @@ class MoveMouse {
         int posX = (int) mousePos.getX();
         int posY = (int) mousePos.getY();
 
-        try {
-            Robot robot = new Robot();
-            robot.mouseMove(posX + x, posY + y);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mouseMove(posX + x, posY + y);
     }
 
     public void clickLeft() {
-        try {
-            Robot robot = new Robot();
-            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     public void clickLong() {
-        try {
-            Robot robot = new Robot();
-            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     public void clickLongRelease() {
-        try {
-            Robot robot = new Robot();
-            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
     public void clickRight() {
-        try {
-            Robot robot = new Robot();
-            robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-            robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
     }
 
     public void wheelDown() {
-        try {
-            Robot robot = new Robot();
-            robot.mouseWheel(1);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mouseWheel(1);
     }
 
     public void wheelUp() {
-        try {
-            Robot robot = new Robot();
-            robot.mouseWheel(-1);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.mouseWheel(-1);
     }
 
     public void altTab() {
-        try {
-            Robot robot = new Robot();
-            robot.keyPress(KeyEvent.VK_ALT);
-            robot.keyPress(KeyEvent.VK_TAB);
-            robot.keyRelease(KeyEvent.VK_ALT);
-            robot.keyRelease(KeyEvent.VK_TAB);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        robot.keyPress(KeyEvent.VK_ALT);
+        robot.keyPress(KeyEvent.VK_TAB);
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_TAB);
     }
 }
