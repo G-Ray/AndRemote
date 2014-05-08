@@ -2,18 +2,9 @@ package com.utopik.andremote.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,8 +13,7 @@ import android.view.View;
  * Created by geoffrey on 4/9/14.
  */
 public class TouchpadEventView extends View implements OnGestureListener {
-    private Paint paint = new Paint();
-    private Path path = new Path();
+
     private float previousX = 0;
     private float previousY = 0;
     private String cmd;
@@ -34,11 +24,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
     public TouchpadEventView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(6f);
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
         gestureScanner = new GestureDetector(this);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -47,7 +32,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
     @Override
     public boolean onDown(MotionEvent event) {
-        path.moveTo(event.getX(), event.getY());
         previousX = event.getX();
         previousY = event.getY();
         return true;
@@ -73,7 +57,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
             /* Build the command */
             cmd = "MouseMove," + Math.round(e2.getX() - previousX) * sensitivity + "," + Math.round(e2.getY() - previousY) * sensitivity;
             Command.sendCmd(cmd);
-            path.lineTo(e2.getX(), e2.getY());
         }
         /* Two fingers, then scroll mouseWheel*/
         else if (e2.getPointerCount() == 2) {
@@ -102,11 +85,6 @@ public class TouchpadEventView extends View implements OnGestureListener {
         cmd = "MouseClickLeft,0,0";
         Command.sendCmd(cmd);
         return true;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawPath(path, paint);
     }
 
     @Override
