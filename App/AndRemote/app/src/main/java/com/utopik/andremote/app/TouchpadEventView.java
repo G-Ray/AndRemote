@@ -1,6 +1,13 @@
 package com.utopik.andremote.app;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.graphics.Canvas;
@@ -34,10 +41,8 @@ public class TouchpadEventView extends View implements OnGestureListener {
         paint.setStrokeJoin(Paint.Join.ROUND);
         gestureScanner = new GestureDetector(this);
 
-        // Todo: Use an int array
-
-        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        //sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        sensitivity = Integer.parseInt(sharedPref.getString("prefSensitivity", "1"));
     }
 
     @Override
@@ -111,6 +116,5 @@ public class TouchpadEventView extends View implements OnGestureListener {
 
         return gestureScanner.onTouchEvent(event);
     }
-
 }
 

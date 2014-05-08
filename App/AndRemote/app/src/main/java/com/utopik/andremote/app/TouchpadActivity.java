@@ -1,9 +1,14 @@
 package com.utopik.andremote.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,13 +28,17 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 
-public class TouchpadActivity extends Activity {
+public class TouchpadActivity extends Activity implements SensorEventListener {
 
     private Thread thread;
     private String host;
     private int port;
     private static Socket socket;
-    private String curMode = "touchpad"; // Used to know in which mode we are
+    public static String curMode = "touchpad"; // Used to know in which mode we are
+    private float prevAccelY = 0;
+    private float prevAccelX = 0;
+    private Sensor mAccel;
+    private SensorManager mSensorManager;
 
     public static Socket getSocket() {
         return socket;
@@ -58,6 +67,11 @@ public class TouchpadActivity extends Activity {
                 return true;
             }
         });
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        mAccel = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        mSensorManager.registerListener(this, mAccel, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -156,5 +170,25 @@ public class TouchpadActivity extends Activity {
         /*  Alt+Tab */
         String cmd = "MouseClickLongRelease,0,0";
         Command.sendCmd(cmd);
+    }
+
+    /* Accelerometer */
+    @Override
+    public void onAccuracyChanged(Sensor arg0, int arg1) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType()==Sensor.TYPE_ORIENTATION && curMode.equals("accel") ){
+            float x = event.values[0];
+            float y = event.values[1];
+
+            String cmd = "MouseMove," + Math.round((x - prevAccelX) * 28) + "," + Math.round((y - prevAccelY) * 28);
+            Command.sendCmd(cmd);
+            Log.i("Accelereometer Command", cmd);
+
+            prevAccelX = event.values[0];
+            prevAccelY = event.values[1];
+        }
     }
 }

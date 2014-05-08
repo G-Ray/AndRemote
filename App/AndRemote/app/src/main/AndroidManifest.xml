@@ -3,6 +3,8 @@
     package="com.utopik.andremote.app" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.sensor"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
