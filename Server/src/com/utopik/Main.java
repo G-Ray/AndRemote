@@ -70,7 +70,7 @@ class Receive_cmd implements Runnable {
                 cmd = bufferedReader.readLine();
                 System.out.println("Command received:" + cmd);
 
-                if(cmd.equals("CloseConnection")) {
+                if(cmd.equals("CloseConnection") || cmd == null) {
                     bufferedReader.close();
                     socket.close();
                 }
