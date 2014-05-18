@@ -76,9 +76,10 @@ public class TouchpadActivity extends Activity implements SensorEventListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.touchpad, menu);
+        if(curMode.equals("accel"))
+            menu.findItem(R.id.action_accel).setTitle("Touchpad Mode");
         return true;
     }
 
@@ -195,6 +196,9 @@ public class TouchpadActivity extends Activity implements SensorEventListener {
     protected void onResume() {
         super.onResume();
         mSensorManager.registerListener(this, mAccel, SensorManager.SENSOR_DELAY_GAME);
+        if(curMode.equals("accel")) {
+            findViewById(R.id.activeSurface).setBackgroundColor(Color.parseColor("#AA66CC"));
+        }
     }
 
     protected void onPause() {
