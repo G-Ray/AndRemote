@@ -191,4 +191,14 @@ public class TouchpadActivity extends Activity implements SensorEventListener {
             prevAccelY = event.values[1];
         }
     }
+
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mAccel, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
 }
