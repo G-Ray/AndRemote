@@ -50,8 +50,8 @@ public class TouchpadActivity extends Activity implements SensorEventListener {
 
         setContentView(R.layout.activity_touchpad);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        host = sharedPref.getString("prefHost", "");
-        port = Integer.parseInt(sharedPref.getString("prefPort", ""));
+        host = sharedPref.getString("prefHost", "localhost");
+        port = Integer.parseInt(sharedPref.getString("prefPort", "8080"));
         thread = new Thread(new ConnectionThread(host, port));
         thread.start();
 
